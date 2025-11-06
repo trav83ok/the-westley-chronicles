@@ -1,17 +1,20 @@
 // app/layout.tsx
-import './globals.css';
-import type { Metadata } from 'next';
-import { initStoryblokServer } from '@/lib/storyblok';
+import "./globals.css";
+import type { Metadata } from "next";
+import { initStoryblokServer } from "@/lib/storyblok";
 
-export const metadata: Metadata = { title: 'the-westley-chronicles' };
+export const metadata: Metadata = {
+  title: "The Westley Chronicles",
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Expose the correct token to the client (for bridge/visual editor) via NEXT_PUBLIC_*
-  if (typeof window !== 'undefined') {
-    (window as any).NEXT_PUBLIC_STORYBLOK_TOKEN =
-      process.env.NEXT_PUBLIC_STORYBLOK_TOKEN;
-  }
-  initStoryblok();
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // ✅ Server-safe init; no tokens => no-op (still compiles)
+  initStoryblokServer();
+
   return (
     <html lang="en">
       <body>{children}</body>

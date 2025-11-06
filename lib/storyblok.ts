@@ -1,18 +1,33 @@
 // lib/storyblok.ts  (NO "use client")
 import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
 
-const accessToken =
-  process.env.STORYBLOK_VERSION === "draft"
-    ? process.env.STORYBLOK_PREVIEW_TOKEN
-    : process.env.STORYBLOK_PUBLIC_TOKEN;
+let initialized = false;
 
 export function initStoryblokServer() {
-  // safe to call multiple times; storyblokInit is idempotent
+  if (initialized) return;
+
+  const version =
+    process.env.STORYBLOK_VERSION === "draft" ? "draft" : "published";
+
+  // Use preview token for drafts, public for published
+  const accessToken =
+    version === "draft"
+      ? process.env.STORYBLOK_PREVIEW_TOKEN
+      : process.env.STORYBLOK_PUBLIC_TOKEN;
+
+  // If you haven't created a Storyblok space yet, just skip init (prevents build crash)
+  if (!accessToken) {
+    initialized = true;
+    return;
+  }
+
   storyblokInit({
     accessToken,
     use: [apiPlugin],
     components: {
-      // e.g. 'heading': Heading, (later)
+      // register components here later, e.g. 'heading': Heading
     },
   });
+
+  initialized = true;
 }

@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export default async function HomePage() {
   const sb = getStoryblokApi();
   const version = process.env.STORYBLOK_VERSION ?? 'published'; // 'draft' in preview mode
-  const { data } = await sb.get('cdn/stories/home', { version });
+  const { data } = await sb.get('cdn/stories/home', { version } as any);
   const story = data?.story;
 
   if (!story) return <main style={{ padding: 24 }}>No story found</main>;

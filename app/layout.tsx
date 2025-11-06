@@ -1,9 +1,9 @@
 // app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
-import { initStoryblok } from '@/lib/storyblok';
+import { initStoryblokServer } from '@/lib/storyblok';
 
-export const metadata: Metadata = { title: 'My Site' };
+export const metadata: Metadata = { title: 'the-westley-chronicles' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // Expose the correct token to the client (for bridge/visual editor) via NEXT_PUBLIC_*

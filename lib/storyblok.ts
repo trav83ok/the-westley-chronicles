@@ -1,18 +1,18 @@
-// lib/storyblok.ts
-'use client';
+// lib/storyblok.ts  (NO "use client")
+import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
 
-import { storyblokInit, apiPlugin } from '@storyblok/react';
+const accessToken =
+  process.env.STORYBLOK_VERSION === "draft"
+    ? process.env.STORYBLOK_PREVIEW_TOKEN
+    : process.env.STORYBLOK_PUBLIC_TOKEN;
 
-let _initialized = false;
-
-export function initStoryblok() {
-  if (_initialized) return;
+export function initStoryblokServer() {
+  // safe to call multiple times; storyblokInit is idempotent
   storyblokInit({
-    accessToken: process.env.NEXT_PUBLIC_STORYBLOK_TOKEN, // set at runtime per mode below
+    accessToken,
     use: [apiPlugin],
     components: {
-      // register your blocks here, e.g. 'hero': Hero,
+      // e.g. 'heading': Heading, (later)
     },
   });
-  _initialized = true;
 }
